@@ -1,33 +1,229 @@
 <NavigationScreenManager>:
-#    ScreenNewUser:
-    MainToolBars:
+    ScreenNewUser:
+    MainAppPage:
         name: "main_app_menu"
-        id: main_toolbars
+        id: main_menu
 
-<MainToolBars>:
+<MainAppPage>:
+    id: main_menu
     MDBoxLayout:
         orientation: 'vertical'
+
         MDTopAppBar:
             id: top_bar
-            title: "Головна"
+            title: main_menu.bar_name
             anchor_title: "left"
             right_action_items: [["theme-light-dark", lambda x: app.switch_theme()]]
+
+        MainAppNavigationBarManager:
+            id: main_nav_bar_manager
+            size_hint_y: 5.2
+
+            MainExerciseScreen:
+                name: "main_exercise"
+
+            ProfileScreen:
+                name: "profile"
+
+            InfoScreen:
+                name: "info"
+
         MDBottomNavigation:
             id: bottom_nav
             selected_color_background: app.theme_cls.bg_normal
             elevation: 5
+            height: self.minimum_height
             MDBottomNavigationItem:
                 name: "main_tab"
                 text: "Головна"
                 icon: 'home-variant'
+                on_tab_press: main_menu.change_tab_screen(self, "main")
             MDBottomNavigationItem:
                 name: "profile_tab"
                 text: "Профіль"
-                icon:'face-man-profile'
+                icon: 'account'
+                on_tab_press: main_menu.change_tab_screen(self, "profile")
             MDBottomNavigationItem:
                 name: "note_tab"
                 text: "Інформація"
                 icon: 'notebook'
+                on_tab_press: main_menu.change_tab_screen(self, "info")
+
+<MainExerciseScreen>:
+    id: main_exerc
+    AnchorLayout:
+        BoxLayout:
+            size_hint: None, None
+            height: "160dp"
+            width: "305dp"
+            spacing: "-35dp"
+            MDIconButton:
+                icon: "chevron-left"
+                icon_size: "120sp"
+            MDIcon:
+                icon: "weight-lifter"
+                pos_hint: {"center_x": 0.5, "center_y":0.5}
+                font_size: "90sp"
+            MDIconButton:
+                icon: "chevron-right"
+                icon_size: "120sp"
+    AnchorLayout:
+        anchor_x: "right"
+        anchor_y: "top"
+        MDIconButton:
+            icon: "calendar-check"
+            style: "outlined"
+            icon_size: "48sp"
+
+<InfoScreen>:
+    id: info
+    name: "info"
+    ScrollView:
+        BoxLayout:
+            orientation: 'vertical'
+            padding: '20dp'
+            spacing: '20dp'
+
+            MDCard:
+                ripple_behavior: True
+                style: "outlined"
+                elevation: 10
+                padding: '10dp'
+                on_release: info.show_imt_info()
+
+                BoxLayout:
+                    orientation: 'vertical'
+                    padding: '10dp'
+                    spacing: '10dp'
+
+                    BoxLayout:
+                        orientation: 'horizontal'
+
+                        MDLabel:
+                            text: "Індекс маси тіла (ІМТ)"
+                            halign: "center"
+                            font_style: "H5"
+                            size_hint_x: 0.9
+
+                        MDIcon:
+                            icon: "chevron-down"
+                            pos_hint: {"center_y": 0.9, "center_x": 0.75}
+                            size_hint_x: 0.1
+
+                    MDLabel:
+                        id: imt_value
+                        halign: "center"
+                        font_style: "H4"
+                        theme_text_color: "Custom"
+                        text_color: 1, 0, 0, 1
+
+                    MDLabel:
+                        id: imt_category
+                        text: "Надмірна вага"
+                        halign: "center"
+                        font_style: "H6"
+
+            MDCard:
+                ripple_behavior: True
+                style: "outlined"
+                elevation: 10
+                padding: '10dp'
+                on_release: info.show_brm_info()
+
+                BoxLayout:
+                    orientation: 'vertical'
+                    padding: '10dp'
+                    spacing: '10dp'
+
+                    BoxLayout:
+                        orientation: 'horizontal'
+
+                        MDLabel:
+                            text: "Базальний рівень метаболізму\n(БРМ)"
+                            halign: "center"
+                            font_style: "H5"
+                            size_hint_x: 0.9
+
+                        MDIcon:
+                            icon: "chevron-down"
+                            pos_hint: {"center_y": 0.9, "center_x": 0.75}
+                            size_hint_x: 0.1
+
+                    MDLabel:
+                        id: brm_value
+                        halign: "center"
+                        font_style: "H4"
+                        theme_text_color: "Custom"
+                        text_color: 0, 1, 0, 1
+
+<ProfileScreen>:
+    id: profile
+    name: "profile"
+    BoxLayout:
+        padding: "15dp"
+        spacing: "20dp"
+        orientation: "vertical"
+        MDIcon:
+            icon: "human-male" if profile.sex_field == "Чоловік" else "human-female"
+            style: "filled"
+            font_size: "90sp"
+            pos_hint: {"center_x": 0.5}
+        GridLayout:
+            cols: 2
+            padding: "10dp"
+            spacing: "30dp"
+            size_hint_y: None
+            height: self.minimum_height
+            MDTextFieldLetters:
+                mode: "rectangle"
+                id: name
+                hint_text: "Ім'я"
+                #helper_text: "Введіть ім'я"
+                input_filter: self.insert_filter
+                max_text_length: 15
+                text: profile.name_field
+            MDTextFieldLetters:
+                mode: "rectangle"
+                id: sec_name
+                hint_text: "Прізвище"
+                input_filter: self.insert_filter
+                #helper_text: "Введіть прізвище"
+                max_text_length: 20
+                text: profile.sec_name_field
+            MDTextField:
+                mode: "rectangle"
+                #helper_text: "Введіть зріст в см"
+                id: height
+                readonly: True
+                hint_text: "Зріст"
+                # if self.focus: root.open_menu(height, (140, 210))
+                text: profile.height_field
+            MDTextField:
+                mode: "rectangle"
+                #helper_text: "Введіть вагу в кг"
+                id: weight
+                readonly: True
+                hint_text: "Вага"
+                # if self.focus: root.open_menu(weight, (30, 250))
+                text: profile.weight_field
+            MDTextField:
+                mode: "rectangle"
+                id: age
+                #helper_text: "Введіть вік"
+                hint_text: "Вік"
+                # if self.focus: root.open_menu(age, (12, 124))
+                text: profile.age_field
+            MDTextField:
+                mode: "rectangle"
+                id: sex
+                readonly: True
+                #helper_text: "Оберіть стать"
+                hint_text: "Стать"
+                text: profile.sex_field
+        MDRaisedButton:
+            text: "Зберегти"
+            pos_hint: {"center_x": 0.5, "top": 1.5}
+            # on_release: app.save_profile()
 
 <ScreenNewUser>:
     md_bg_color: app.theme_cls.primary_color
@@ -94,13 +290,13 @@
                 text: "Чоловік"
                 icon: "gender-male"
                 pos_hint: {"center_y": 0.5}
-                on_release: root.update_gender("male")
+                on_release: root.update_gender("Чоловік")
             SexUserToggleButton:
                 group: 'gender'
                 text: "Жінка"
                 icon: 'gender-female'
                 pos_hint: {"center_y": 0.5}
-                on_release: root.update_gender("female")
+                on_release: root.update_gender("Жінка")
 
         MDRaisedButton:
             text: "Далі"
