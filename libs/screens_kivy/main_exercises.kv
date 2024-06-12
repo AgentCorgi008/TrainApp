@@ -1,0 +1,92 @@
+#:import NavigationScreenManager libs.screens_py.exercises_navigation.NavigationScreenManager
+#:import ExerciseDescrScreen libs.screens_py.exercise_descr.ExerciseDescrScreen
+#:import CreateProgramScreen libs.screens_py.create_program.CreateProgramScreen
+#:import WorkoutProgramsScreen libs.screens_py.program_train.WorkoutProgramsScreen
+#:import WorkoutProgramTrainScreen libs.screens_py.program_train.WorkoutProgramTrainScreen
+#:import WorkoutProgramExerciseScreen libs.screens_py.program_train.WorkoutProgramExerciseScreen
+
+<ExercisesScreen>:
+    id: main_exercs
+    name: "main_exercises"
+
+    NavigationExerciseManager:
+        id: exerc_manager
+        name: "exercise_manager"
+
+        MainExerciseScreen:
+            id: main_exerc
+            name: "main_exercise"
+
+        CreateProgramScreen:
+
+        ExerciseDescrScreen:
+
+        ProgramsNotFoundScreen:
+
+        WorkoutProgramsScreen:
+
+        WorkoutProgramTrainScreen:
+
+        WorkoutProgramExerciseScreen:
+
+<MainExerciseScreen>:
+    id: main_exerc
+    name: "main_exercise"
+    AnchorLayout:
+        BoxLayout:
+            orientation: "vertical"
+            size_hint: None, None
+            height: "230dp"
+            width: "305dp"
+            MDLabel:
+                id: date_label
+                text: root.current_date
+                halign: "center"
+                theme_text_color: "Primary"
+                font_style: "H5"
+            BoxLayout:
+                size_hint: None, None
+                height: "90dp"
+                width: "305dp"
+                spacing: "-35dp"
+                MDIconButton:
+                    icon: "chevron-left"
+                    icon_size: "120sp"
+                    on_release: root.prev_day()
+                MDIcon:
+                    icon: "weight-lifter"
+                    pos_hint: {"center_x": 0.5, "center_y":0.85}
+                    font_size: "90sp"
+                MDIconButton:
+                    icon: "chevron-right"
+                    icon_size: "120sp"
+                    on_release: root.next_day()
+            MDRaisedButton:
+                text: "Почати тренування"
+                pos_hint: {"center_x": 0.51}
+                on_release: root.manager.start_workout();
+
+    AnchorLayout:
+        anchor_x: "right"
+        anchor_y: "top"
+        MDIconButton:
+            icon: "calendar-check"
+            style: "outlined"
+            icon_size: "48sp"
+
+<ProgramsNotFoundScreen@Screen>:
+    name: 'program_not_found'
+    AnchorLayout:
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: None, None
+            size: dp(450), dp(100)
+            spacing: dp(10)
+            MDLabel:
+                text: "Немає програм тренувань для цього дня."
+                halign: 'center'
+                font_style: "H6"
+            MDRaisedButton:
+                text: "Створити програму тренувань"
+                pos_hint: {'center_x': 0.5}
+                on_release: root.manager.push("create_program", "Створення програми")

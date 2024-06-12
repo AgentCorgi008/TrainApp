@@ -8,6 +8,7 @@ CONFIG_FILE_USER = "configs/user_id.json"
 class UserDB:
     def __init__(self):
         self.user_id = self.__get_user_id()
+        self.user_ref = None
         self.db = db
 
     def __get_user_id(self):
@@ -60,6 +61,11 @@ class UserDB:
         user_ref = self.get_exist_user()
         return user_ref.collection('workout_programs').get()
 
+    def get_exercise_info(self, group_id, exercise_id):
+        exercise_group_ref = self.db.collection('exercises').document(group_id)
+        exercise_data = exercise_group_ref.collection('exercises').document(exercise_id).get().to_dict()
+        return exercise_data
+
     def create_workout_program(self, program_data):
         user_ref = self.get_exist_user()
         program_ref = user_ref.collection('workout_programs').document()
@@ -70,3 +76,12 @@ class UserDB:
         user_ref = self.get_exist_user()
         calendar_ref = user_ref.collection('workout_calendar').document(day)
         calendar_ref.set({'programs': program_refs})
+
+    def save_completed_workout(self, program_name, completed_exercises, date):
+        user_ref = self.get_exist_user()
+        workout_done_ref = user_ref.collection('workout_done_dates').document()
+        workout_done_ref.set({
+            'program_name': program_name,
+            'exercises': completed_exercises,
+            'date': date
+        })

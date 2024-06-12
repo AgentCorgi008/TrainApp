@@ -39,6 +39,15 @@ class NavigationScreenManager(ScreenManager):
 
             print(self.top_bar_name_stack)
 
+    def set_to_default_top_bar(self):
+        self.screen_stack = []
+        self.top_bar_name_stack = ["Головна"]
+        self.last_pop = []
+        app = MDApp.get_running_app()
+        main_menu = app.manager.ids.main_menu
+        main_menu.bar_name = "Головна"
+        app.manager.get_top_app_bar().left_action_items = []
+
 
 class NavigationExerciseManager(NavigationScreenManager):
     date_obj = None
@@ -65,11 +74,3 @@ class NavigationExerciseManager(NavigationScreenManager):
 
     def show_workout_programs(self, program_refs):
         self.push('workout_programs', "Програми тренувань")
-        programs_screen = self.get_screen('workout_programs')
-        programs_screen.ids.programs_list.clear_widgets()
-
-        for ref in program_refs:
-            program_data = ref.get().to_dict()
-            programs_screen.ids.programs_list.add_widget(
-                OneLineListItem(text=program_data['name'])
-            )

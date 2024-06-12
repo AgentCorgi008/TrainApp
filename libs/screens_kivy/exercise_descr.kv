@@ -1,0 +1,69 @@
+<ExerciseDescrScreen>:
+    name: "exercise_description"
+    ScrollView:
+        BoxLayout:
+            orientation: 'vertical'
+            padding: '10dp'
+            spacing: '10dp'
+
+            MDLabel:
+                id: exercise_name
+                size_hint_y: None
+                height: self.texture_size[1] + dp(20)
+                text: "Назва Вправи"
+                halign: "center"
+                font_style: "H4"
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: self.minimum_height
+                padding: '10dp'
+                spacing: '10dp'
+                MDLabel:
+                    id: muscle_group
+                    text: "Група м'язів"
+                    halign: "center"
+                    font_style: "Subtitle1"
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: '10dp'
+                    MDLabel:
+                        text: "Складність:"
+                        font_style: "Subtitle1"
+
+                    BoxLayout:
+                        size_hint_x: 1.2
+                        spacing: '25dp'
+                        MDIcon:
+                            id: star_1
+                            icon: "star-outline"
+                        MDIcon:
+                            id: star_2
+                            icon: "star-outline"
+                        MDIcon:
+                            id: star_3
+                            icon: "star-outline"
+
+            MDSeparator:
+                id: separator1
+
+            StackLayout:
+                id: muscles_info
+                padding: [10, 10, 10, 0]
+                spacing: '10dp'
+                size_hint_y: None
+                height: self.minimum_height
+
+            MDLabel:
+                id: exercise_description
+                text: "Опис Вправи"
+                halign: "left"
+                font_style: "Body1"
+                padding: [10, 0]
+                size_hint_y: None
+                height: self.texture_size[1]
+
+            Widget:

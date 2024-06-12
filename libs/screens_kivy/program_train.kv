@@ -1,0 +1,146 @@
+<WorkoutProgramsScreen>:
+    name: 'workout_programs'
+    BoxLayout:
+        id: box_programs_workouts
+        orientation: 'vertical'
+        ScrollView:
+            MDList:
+                id: programs_list
+
+    AnchorLayout:
+        anchor_x: "right"
+        anchor_y: "bottom"
+        FloatLayout:
+            size_hint: None, None
+            size: dp(120), dp(100)
+            MDIconButton:
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                style: "tonal"
+                icon: "plus"
+                icon_size: "35sp"
+                md_bg_color: app.theme_cls.primary_color
+                on_release: root.manager.push("create_program", "Створення програми")
+
+<WorkoutProgramTrainScreen>:
+    name: "workout_program_train"
+    BoxLayout:
+        id: workout_box
+        orientation: 'vertical'
+        padding: '10dp'
+        spacing: '10dp'
+
+        MDLabel:
+            size_hint_y: None
+            height: dp(50)
+            id: program_name
+            text: "Перелік вправ"
+            halign: "center"
+            font_style: "H4"
+
+        ScrollView:
+            MDList:
+                id: exercise_list
+
+        MDRaisedButton:
+            id: start_workout_btn
+            text: "Почати тренування"
+            pos_hint: {"center_x": 0.5}
+            on_release: root.confirm_start_workout()
+
+<WorkoutProgramExerciseScreen>:
+    name: "workout_exercise"
+    BoxLayout:
+        orientation: 'vertical'
+        padding: '10dp'
+        spacing: '25dp'
+
+        MDLabel:
+            size_hint_y: None
+            height: self.texture_size[1]
+            id: exercise_name
+            text: "Назва вправи"
+            halign: "center"
+            font_style: "H4"
+
+        BoxLayout:
+            id: set_list
+            orientation: 'vertical'
+            spacing: '10dp'
+            padding: [10, 10, 10, 0]
+            size_hint_x: None
+            width: dp(380)
+            pos_hint: {"center_x": 0.5}
+
+        AnchorLayout:
+            anchor_y: "top"
+            MDRaisedButton:
+                text: "Позначити як завершене"
+                pos_hint: {"center_x": 0.5}
+                on_release: root.mark_as_completed()
+
+<WorkoutSetWidget>:
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: None, None
+        width: dp(380)
+        height: dp(60)
+        spacing: '100dp'
+        MDLabel:
+            id: set_num
+            size_hint: None, None
+            size: dp(15), dp(45)
+            text: "1."
+
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: '5dp'
+            size_hint: None, None
+            size: dp(100), dp(60)
+            MDTextField:
+                size_hint: None, None
+                height: self.minimum_height
+                width: dp(15)
+                valign: "middle"
+                pos_hint: {"center_y": 0.5}
+                id: reps
+                input_filter: 'int'
+                text: "8"
+            MDLabel:
+                pos_hint: {"center_y": 0.45}
+                text: "повторів"
+                valign: "middle"
+
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: '5dp'
+            size_hint: None, None
+            size: dp(60), dp(60)
+            MDTextField:
+                id: weight
+                size_hint: None, None
+                width: dp(25)
+                height: self.minimum_height
+                pos_hint: {"center_y": 0.5}
+                input_filter: 'int'
+                valign: "middle"
+                text: "0"
+            MDLabel:
+                pos_hint: {"center_y": 0.45}
+                text: "кг"
+                valign: "middle"
+
+<CompletedWorkoutScreen>:
+    name: 'completed_workout'
+    BoxLayout:
+        orientation: 'vertical'
+        padding: '10dp'
+        spacing: '10dp'
+        MDLabel:
+            id: workout_name
+            text: "Виконане тренування"
+            halign: "center"
+            font_style: "H4"
+        ScrollView:
+            MDList:
+                id: exercises_list
+        Widget:
